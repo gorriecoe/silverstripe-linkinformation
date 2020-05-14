@@ -1,0 +1,23 @@
+{
+  "name": "gorriecoe/silverstripe-linkinformation",
+  "description": "Adds link types preset in your config.yml.",
+  "type": "silverstripe-vendormodule",
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Gorrie Coe",
+      "email": "gorriecoe@gmail.com"
+    }
+  ],
+  "keywords": [
+    "silverstripe",
+    "link"
+  ],
+  "homepage": "http://github.com/gorriecoe/silverstripe-linkinformation",
+  "require": {
+    "gorriecoe/silverstripe-link": "^1.2.3"
+  },
+  "extra": {
+    "installer-name": "linkinformation"
+  }
+}

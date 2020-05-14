@@ -1,0 +1,6 @@
+---
+Name: linkinformationconfig
+---
+gorriecoe\Link\Models\Link:
+  extensions:
+    - gorriecoe\LinkInformation\LinkInformationExtension

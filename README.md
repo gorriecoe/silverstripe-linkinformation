@@ -1,4 +1,4 @@
-# Silverstripe yml preset links
+# Silverstripe Llnk Information
 
 Adds information about link such category, language and author to [gorriecoe/silverstripe-link](https://github.com/gorriecoe/silverstripe-link).
 

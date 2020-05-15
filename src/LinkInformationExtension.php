@@ -27,6 +27,7 @@ class LinkInformationExtension extends DataExtension
         'AuthorUrl' => 'Varchar',
         'Language' => 'Varchar',
         'Category' => 'Varchar',
+        'Media' => 'Varchar',
         'PublishedDate' => 'Varchar',
         'License' => 'Varchar'
     ];
@@ -55,6 +56,7 @@ class LinkInformationExtension extends DataExtension
             'AuthorUrl',
             'Language',
             'Category',
+            'Media',
             'PublishedDate',
             'License'
         ]);
@@ -84,6 +86,10 @@ class LinkInformationExtension extends DataExtension
                                 _t(__CLASS__ . '.CATEGORY', 'Category')
                             ),
                             ReadonlyField::create(
+                                'Media',
+                                _t(__CLASS__ . '.MEDIA', 'Media')
+                            ),
+                            ReadonlyField::create(
                                 'PublishedDate',
                                 _t(__CLASS__ . '.PUBLISHEDDATE', 'Published date')
                             ),
@@ -108,6 +114,7 @@ class LinkInformationExtension extends DataExtension
                 $InformationWrapper = $InformationWrapper->orIf('Type')->isEqualTo($type);
             }
         };
+
         $InformationWrapper->end();
 
         return $fields;
@@ -126,9 +133,10 @@ class LinkInformationExtension extends DataExtension
             $owner->AuthorName = null;
             $owner->AuthorUrl = null;
             $owner->Language = null;
+            $owner->Category = null;
+            $owner->Media = null;
             $owner->PublishedDate = null;
             $owner->License = null;
-            $owner->Category = null;
         }
 
         switch ($type) {
@@ -138,6 +146,7 @@ class LinkInformationExtension extends DataExtension
                     $owner->AuthorName = $information->AuthorName;
                     $owner->AuthorUrl = $information->AuthorUrl;
                     $owner->Language = $information->Language;
+                    $owner->Media = ucfirst($information->providerName) ? : 'Link';
                     $owner->PublishedDate = $information->PublishedDate;
                     $owner->License = $information->License;
                     if ($information->Type == 'photo') {
@@ -150,16 +159,20 @@ class LinkInformationExtension extends DataExtension
             case 'Email':
             case 'Phone':
                 $owner->Category = $type;
+                $owner->Media = $type;
                 break;
             case 'File':
-                if ($file = $owner->File() && $file->exists()) {
-                    if ($file->hasMethod('appCategory')) {
-                        $owner->Category = $file->appCategory();
+                $file = $owner->File();
+                if ($file->exists()) {
+                    if ($file->hasMethod('appCategory') && $file->hasMethod('getExtension')) {
+                        $owner->Category = ucfirst($file->appCategory());
+                        $owner->Media = ucfirst($file->getExtension());
                     }
                 }
                 break;
             case 'SiteTree':
                 $owner->Category = 'Link';
+                $owner->Media = $owner->SiteTree()->i18n_singular_name();
                 break;
         }
     }
